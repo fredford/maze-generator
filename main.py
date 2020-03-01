@@ -7,39 +7,28 @@ def main():
     pygame.init()
     board_width = 10
     board_height = 10
-    screen = pygame.display.set_mode((board_width*50, board_height*50))
-    maze = maze_generator.Maze(board_width, board_height)
+    board_size = 90
+    window_size = 600
+    scale = window_size/board_size
+    screen = pygame.display.set_mode((window_size, window_size))
+    maze = maze_generator.Maze(board_size, board_size)
     maze.print_maze()
 
     cells = maze.maze
 
     pygame.display.set_caption("Maze")
-    clock = pygame.time.Clock()
 
 
     # Fill the background with white
     screen.fill((255, 255, 255))
 
     for i in range(len(cells)+1):
-        pygame.draw.line(screen, (0,0,0), (0,i*50), (board_width*50,i*50))
+        pygame.draw.line(screen, (0,0,0), (0,i*scale), (window_size,i*scale))
 
     for j in range(len(cells[0])+1):
-        pygame.draw.line(screen, (0,0,0), (j*50,0), (j*50,board_height*50))
+        pygame.draw.line(screen, (0,0,0), (j*scale,0), (j*scale,window_size))
 
     # Draw a solid blue circle in the center
-
-    cell = cells[0][0]
-    print(cell.walls)
-
-    pos_x = 0
-    pos_y = 0
-
-    pygame.Rect(pos_x, pos_y, pos_x+50, pos_y+50)
-
-    above = (pos_x + 5, pos_y, pos_x + 45, pos_y +45)
-    below = (pos_y + 5, pos_y + 5, pos_x + 45, pos_y + 50)
-    left = (pos_x, pos_y+5, pos_x+45, pos_y+45)
-    right = (pos_x+5, pos_y+5, pos_x+50, pos_y+45)
 
     for i in range(len(cells)):
         for j in range(len(cells[i])):
@@ -50,16 +39,16 @@ def main():
 
                 if not value and direction == "above":
                     print('above')
-                    pygame.draw.line(screen, (255,255,255), ((50*i)+1, (50*j)) , ((50*i)+49, (50*j)))
+                    pygame.draw.line(screen, (255,255,255), ((scale*i)+1, (scale*j)) , ((scale*i)+scale, (scale*j)))
                 if not value and direction == "below":
                     print('below')
-                    pygame.draw.line(screen, (255,255,255), ((50*i)+1, (50*j)+50), ((50*i)+49, (50*j)+50))
+                    pygame.draw.line(screen, (255,255,255), ((scale*i)+1, (scale*j)+scale), ((scale*i)+scale, (scale*j)+scale))
                 if not value and direction == "left":
                     print('left')
-                    pygame.draw.line(screen, (255,255,255), ((50*i), (50*j)), ((50*i), (50*j)+49))
+                    pygame.draw.line(screen, (255,255,255), ((scale*i), (scale*j)), ((scale*i), (scale*j)+scale))
                 if not value and direction == "right":
                     print('right')
-                    pygame.draw.line(screen, (255,255,255), ((50*i)+50, (50*j)+1), ((50*i)+50, (50*j)+49))
+                    pygame.draw.line(screen, (255,255,255), ((scale*i)+scale, (scale*j)+1), ((scale*i)+scale, (scale*j)+scale))
 
 
     # Flip the display
