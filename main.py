@@ -38,16 +38,12 @@ def main():
             for direction, value in cell.walls.items():
 
                 if not value and direction == "above":
-                    print('above')
                     pygame.draw.line(screen, (255,255,255), ((scale*i)+1, (scale*j)) , ((scale*i)+scale, (scale*j)))
                 if not value and direction == "below":
-                    print('below')
                     pygame.draw.line(screen, (255,255,255), ((scale*i)+1, (scale*j)+scale), ((scale*i)+scale, (scale*j)+scale))
                 if not value and direction == "left":
-                    print('left')
                     pygame.draw.line(screen, (255,255,255), ((scale*i), (scale*j)), ((scale*i), (scale*j)+scale))
                 if not value and direction == "right":
-                    print('right')
                     pygame.draw.line(screen, (255,255,255), ((scale*i)+scale, (scale*j)+1), ((scale*i)+scale, (scale*j)+scale))
 
 
