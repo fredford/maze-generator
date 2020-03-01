@@ -12,14 +12,11 @@ def main():
     scale = window_size/board_size
     screen = pygame.display.set_mode((window_size, window_size))
     maze = maze_generator.Maze(board_size, board_size)
-    maze.print_maze()
 
     cells = maze.maze
 
     pygame.display.set_caption("Maze")
 
-
-    # Fill the background with white
     screen.fill((255, 255, 255))
 
     for i in range(len(cells)+1):
@@ -27,8 +24,6 @@ def main():
 
     for j in range(len(cells[0])+1):
         pygame.draw.line(screen, (0,0,0), (j*scale,0), (j*scale,window_size))
-
-    # Draw a solid blue circle in the center
 
     for i in range(len(cells)):
         for j in range(len(cells[i])):
@@ -46,7 +41,6 @@ def main():
                 if not value and direction == "right":
                     pygame.draw.line(screen, (255,255,255), ((scale*i)+scale, (scale*j)+1), ((scale*i)+scale, (scale*j)+scale))
 
-
     # Flip the display
     pygame.display.flip()
 
@@ -54,13 +48,12 @@ def main():
     running = True
     while running:
 
-        # Did the user click the window close button?
+        # Did the user click the window close button
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
     # Done! Time to quit.
     pygame.quit()
-
 
 main()
