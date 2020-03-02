@@ -19,6 +19,9 @@ def main():
 
     screen.fill((255, 255, 255))
 
+    pygame.draw.rect(screen, (0,0,255), (maze.start.x*scale, maze.start.y*scale, scale, scale))
+    pygame.draw.rect(screen, (255,0,0), (maze.end.x*scale, maze.end.y*scale, scale, scale))
+
     for i in range(len(cells)+1):
         pygame.draw.line(screen, (0,0,0), (0,i*scale), (window_size,i*scale))
 

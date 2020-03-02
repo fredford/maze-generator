@@ -8,10 +8,13 @@ class Maze:
         self.directions = {"above":(0, -1), "below":(0, 1), "left":(-1, 0), "right":(1,0)}
         self.width = width
         self.height = height
+        self.start = None
+        self.end = None
         self.maze = []
         self.create_cells()
         self.mesh_cells()
         self.dfs_make_maze()
+        self.set_start_end()
 
     def create_cells(self):
         for i in range(self.width):
@@ -58,6 +61,15 @@ class Maze:
             next_cell.set_path(current_cell)
             frontier.append(current_cell)
             current_cell = next_cell
+
+    def set_start_end(self):
+        start = (random.randint(0, self.width), random.randint(0, self.height))
+        end = start
+        while start == end:
+            end = (random.randint(0, self.width), random.randint(0, self.height))
+
+        self.start = self.maze[start[0]][start[1]]
+        self.end = self.maze[end[0]][end[1]]
 
     def print_maze(self):
         for i in range(len(self.maze)):
