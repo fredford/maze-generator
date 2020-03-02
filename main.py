@@ -1,19 +1,22 @@
-import numpy as np
 import maze_generator
 import pygame, time
+import maze as mg
+#from window import Window
+import a_star as astar
 
 
 def main():
     pygame.init()
-    board_width = 10
-    board_height = 10
-    board_size = 90
+    board_size = 20
     window_size = 600
     scale = window_size/board_size
     screen = pygame.display.set_mode((window_size, window_size))
-    maze = maze_generator.Maze(board_size, board_size)
+    maze = mg.Maze(board_size, board_size)
 
     cells = maze.maze
+
+    a_star = astar.A_star(maze)
+
 
     pygame.display.set_caption("Maze")
 
@@ -36,13 +39,23 @@ def main():
             for direction, value in cell.walls.items():
 
                 if not value and direction == "above":
-                    pygame.draw.line(screen, (255,255,255), ((scale*i)+1, (scale*j)) , ((scale*i)+scale, (scale*j)))
+                    pygame.draw.line(screen, (255,255,255), ((scale*i)+1, (scale*j)) , ((scale*i)+scale-1, (scale*j)))
                 if not value and direction == "below":
-                    pygame.draw.line(screen, (255,255,255), ((scale*i)+1, (scale*j)+scale), ((scale*i)+scale, (scale*j)+scale))
+                    pygame.draw.line(screen, (255,255,255), ((scale*i)+1, (scale*j)+scale), ((scale*i)+scale-1, (scale*j)+scale))
                 if not value and direction == "left":
-                    pygame.draw.line(screen, (255,255,255), ((scale*i), (scale*j)), ((scale*i), (scale*j)+scale))
+                    pygame.draw.line(screen, (255,255,255), ((scale*i), (scale*j)+1), ((scale*i), (scale*j)+scale-1))
                 if not value and direction == "right":
-                    pygame.draw.line(screen, (255,255,255), ((scale*i)+scale, (scale*j)+1), ((scale*i)+scale, (scale*j)+scale))
+                    pygame.draw.line(screen, (255,255,255), ((scale*i)+scale, (scale*j)+1), ((scale*i)+scale, (scale*j)+scale-1))
+
+    for node in a_star.path:
+        print("hello")
+        print(str(node.cell) + "cell")
+        print(str(maze.start) + "start")
+
+        if node.cell != maze.start:
+            print(node.cell.x, node.cell.y, node.previous_cell.x, node.previous_cell.y)
+            pygame.draw.line(screen, (0,255,255), (node.cell.x, node.cell.y),(node.previous_cell.x, node.previous_cell.y))
+
 
     # Flip the display
     pygame.display.flip()
