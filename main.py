@@ -48,7 +48,7 @@ def main():
 
 
 
-    for cell in a_star.closed:
+    for cell in a_star.path:
         #print("hello")
         print(str(cell) + "cell")
         print(str(maze.start) + "start")
