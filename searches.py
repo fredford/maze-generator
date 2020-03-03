@@ -1,4 +1,4 @@
-class A_star:
+class Searches:
 
     def __init__(self, maze):
 
@@ -6,7 +6,6 @@ class A_star:
         self.start = self.maze.start
         self.end = self.maze.end
         self.path = []
-        self.nodes = []
         self.final_path = ""
         self.bfs_path = []
 
@@ -25,23 +24,17 @@ class A_star:
             current = frontier[0]
             self.bfs_closed.append(frontier.pop(0))
 
-            print("After")
-            print(frontier)
-
             if current == self.end:
                 while current != self.start:
                     self.bfs_path.append(current)
                     current = current.previous
 
             for direction, wall in current.walls.items():
-                print(current.walls)
                 if not wall:
                     cell = current.neighbors[direction]
                     if cell in self.bfs_closed or cell in frontier:
-                        print(cell)
                         continue
                     cell.set_previous(current)
-                    #cell.update_distance()
                     frontier.append(cell)
 
 
@@ -51,9 +44,6 @@ class A_star:
         count = 0
 
         while len(frontier) > 0 and count < 10000:
-
-            #print("Frontier")
-            #print(frontier)
 
             frontier.sort(key=lambda x: x.distance)
             current = frontier[0]
@@ -66,9 +56,6 @@ class A_star:
                     current = current.previous
 
             self.closed.append(frontier.pop(0))
-
-            #print("Frontier pop")
-            #print(frontier)
 
             for direction, wall in current.walls.items():
                 if not wall:

@@ -2,7 +2,7 @@ import maze_generator
 import pygame, time
 import maze as mg
 #from window import Window
-import a_star as astar
+import searches
 
 
 def main():
@@ -15,7 +15,7 @@ def main():
 
     cells = maze.maze
 
-    a_star = astar.A_star(maze)
+    search_results = searches.Searches(maze)
 
     pygame.display.set_caption("Maze")
 
@@ -46,20 +46,20 @@ def main():
                 if not value and direction == "right":
                     pygame.draw.line(screen, (255,255,255), ((scale*i)+scale, (scale*j)+1), ((scale*i)+scale, (scale*j)+scale-1))
 
-    for cell in a_star.bfs_closed:
+    for cell in search_results.bfs_closed:
         if cell != maze.start:
             pygame.draw.line(screen, (51,255,51), (cell.x*scale+(scale/2), cell.y*scale+(scale/2)),(cell.previous.x*scale+(scale/2), cell.previous.y*scale+(scale/2)))
 
-    for cell in a_star.bfs_path:
+    for cell in search_results.bfs_path:
         if cell != maze.start:
             pygame.draw.line(screen, (255,0,255), (cell.x*scale+(scale/2), cell.y*scale+(scale/2)),(cell.previous.x*scale+(scale/2), cell.previous.y*scale+(scale/2)))
 
 
-    #for cell in a_star.closed:
+    #for cell in search_results.closed:
     #    if cell != maze.start:
     #        pygame.draw.line(screen, (51,255,51), (cell.x*scale+(scale/2), cell.y*scale+(scale/2)),(cell.previous.x*scale+(scale/2), cell.previous.y*scale+(scale/2)))
 
-    for cell in a_star.path:
+    for cell in search_results.path:
         if cell != maze.start:
             pygame.draw.line(screen, (0,0,204), (cell.x*scale+(scale/2), cell.y*scale+(scale/2)),(cell.previous.x*scale+(scale/2), cell.previous.y*scale+(scale/2)))
 
