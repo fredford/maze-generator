@@ -61,14 +61,10 @@ class Maze:
             current_cell = next_cell
 
     def set_start_end(self):
-        start = (random.randint(0, self.width), random.randint(0, self.height))
+        start = (random.randint(0, self.width-1), random.randint(0, self.height-1))
         end = start
         while start == end:
-            end = (random.randint(0, self.width), random.randint(0, self.height))
-        print(start)
-        print(end)
-        print(len(self.maze))
-        print(len(self.maze[0]))
+            end = (random.randint(0, self.width-1), random.randint(0, self.height-1))
 
         self.start = self.maze[start[0]][start[1]]
         self.end = self.maze[end[0]][end[1]]

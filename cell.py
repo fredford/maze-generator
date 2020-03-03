@@ -11,17 +11,27 @@ class Cell:
         self.neighbors = {}
         self.test = False
         self.distance = 0
-        self.previous = None
+        self.total_distance = 0
+        self.euclidean_distance = 0
+        self.astar_previous = None
         self.bfs_previous = None
 
-    def set_previous(self, previous):
-        self.previous = previous
+    def set_astar_previous(self, astar_previous):
+        self.astar_previous = astar_previous
 
-    def update_distance(self):
-        if self.previous == None:
+    def set_bfs_previous(self, bfs_previous):
+        self.bfs_previous = bfs_previous
+
+    def set_distance(self, distance):
+        self.distance = distance
+
+    def update_distance(self, distance_to_goal):
+        if self.astar_previous == None:
             self.distance = 0
+            self.total_distance = distance_to_goal
         else:
-            self.distance = self.previous.distance + 1
+            self.distance = self.astar_previous.distance + 1
+            self.total_distance = self.distance + distance_to_goal
 
     def all_walls(self):
         return all(self.walls.values())

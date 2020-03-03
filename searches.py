@@ -1,3 +1,5 @@
+import math
+
 class Searches:
 
     def __init__(self, maze):
@@ -17,67 +19,63 @@ class Searches:
         self.a_star_algorithm()
 
     def bfs_algorithm(self):
-        self.clear_history()
-
         bfs_closed = []
         bfs_path = []
 
-        frontier = [self.start]
+        bfs_frontier = [self.start]
 
-        while len(frontier) > 0:
-            current = frontier[0]
-            bfs_closed.append(frontier.pop(0))
+        while len(bfs_frontier) > 0:
+            current = bfs_frontier[0]
+            bfs_closed.append(bfs_frontier.pop(0))
 
             if current == self.end:
                 while current != self.start:
                     bfs_path.append(current)
-                    current = current.previous
-                continue
+                    current = current.bfs_previous
+                self.paths["bfs closed"] = bfs_closed
+                self.paths["bfs path"] = bfs_path
+                return
 
             for direction, wall in current.walls.items():
                 if not wall:
                     cell = current.neighbors[direction]
-                    if cell in bfs_closed or cell in frontier:
+                    if cell == None:
                         continue
-                    cell.set_previous(current)
-                    frontier.append(cell)
-
-        self.paths["bfs closed"] = bfs_closed
-        self.paths["bfs path"] = bfs_path
+                    if cell in bfs_closed or cell in bfs_frontier:
+                        continue
+                    cell.set_bfs_previous(current)
+                    bfs_frontier.append(cell)
 
     def a_star_algorithm(self):
-        self.clear_history()
-
         astar_closed = []
         astar_path = []
 
         frontier = [self.start]
 
         while len(frontier) > 0:
-            frontier.sort(key=lambda x: x.distance)
+            frontier.sort(key=lambda x: x.total_distance)
             current = frontier[0]
+
+            astar_closed.append(frontier.pop(0))
 
             if current == self.end:
                 while current != self.start:
                     astar_path.append(current)
-                    current = current.previous
+                    current = current.astar_previous
 
                 self.paths["astar closed"] = astar_closed
                 self.paths["astar path"] = astar_path
                 return
 
-            astar_closed.append(frontier.pop(0))
-
             for direction, wall in current.walls.items():
                 if not wall:
                     cell = current.neighbors[direction]
+
+                    if cell is None:
+                        continue
                     if cell in astar_closed or cell in frontier:
                         continue
-                    cell.set_previous(current)
-                    cell.update_distance()
+                    cell.set_astar_previous(current)
+                    distance_to_goal = math.sqrt((cell.x - self.end.x)**2 + (cell.y - self.end.y)**2)
+                    cell.update_distance(distance_to_goal)
                     frontier.append(cell)
-
-    def clear_history(self):
-        for row in self.maze.maze:
-            for cell in row:
-                cell.previous = None
