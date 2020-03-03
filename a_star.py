@@ -8,8 +8,42 @@ class A_star:
         self.path = []
         self.nodes = []
         self.final_path = ""
+        self.bfs_path = []
 
         self.a_star_algorithm()
+        self.bfs_algorithm()
+
+    def bfs_algorithm(self):
+        for row in self.maze.maze:
+            for cell in row:
+                cell.previous = None
+
+        self.bfs_closed = []
+        frontier = [self.start]
+        while len(frontier) > 0:
+            print(frontier)
+            current = frontier[0]
+            self.bfs_closed.append(frontier.pop(0))
+
+            print("After")
+            print(frontier)
+
+            if current == self.end:
+                while current != self.start:
+                    self.bfs_path.append(current)
+                    current = current.previous
+
+            for direction, wall in current.walls.items():
+                print(current.walls)
+                if not wall:
+                    cell = current.neighbors[direction]
+                    if cell in self.bfs_closed or cell in frontier:
+                        print(cell)
+                        continue
+                    cell.set_previous(current)
+                    #cell.update_distance()
+                    frontier.append(cell)
+
 
     def a_star_algorithm(self):
         frontier = [self.start]
@@ -18,13 +52,13 @@ class A_star:
 
         while len(frontier) > 0 and count < 10000:
 
-            print("Frontier")
-            print(frontier)
+            #print("Frontier")
+            #print(frontier)
 
             frontier.sort(key=lambda x: x.distance)
             current = frontier[0]
-            print("Current")
-            print(current)
+            #print("Current")
+            #print(current)
 
             if current == self.end:
                 while current != self.start:
@@ -33,8 +67,8 @@ class A_star:
 
             self.closed.append(frontier.pop(0))
 
-            print("Frontier pop")
-            print(frontier)
+            #print("Frontier pop")
+            #print(frontier)
 
             for direction, wall in current.walls.items():
                 if not wall:

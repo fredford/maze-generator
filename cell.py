@@ -12,6 +12,7 @@ class Cell:
         self.test = False
         self.distance = 0
         self.previous = None
+        self.bfs_previous = None
 
     def set_previous(self, previous):
         self.previous = previous
