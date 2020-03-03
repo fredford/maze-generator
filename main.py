@@ -10,15 +10,56 @@ def main():
     board_size = 20
     window_size = 600
     scale = window_size/board_size
-    screen = pygame.display.set_mode((window_size, window_size))
-    maze = mg.Maze(board_size, board_size)
-
-    cells = maze.maze
-
-    search_results = searches.Searches(maze)
+    clock = pygame.time.Clock()
 
     pygame.display.set_caption("Maze")
+    screen = pygame.display.set_mode((window_size, window_size))
+    #myFont = pygame.font.SysFont('arial', 14)
 
+    maze = mg.Maze(board_size, board_size)
+    search_results = searches.Searches(maze)
+
+
+    running = True
+
+    draw_grid(screen, scale, maze, window_size)
+
+    for name in search_results.paths.keys():
+        print(name)
+        for cell in search_results.paths[name]:
+            print(cell, cell.previous)
+            if cell != maze.start:
+                pygame.draw.line(screen, search_results.colours[name], (cell.x*scale+(scale/2), cell.y*scale+(scale/2)),(cell.previous.x*scale+(scale/2), cell.previous.y*scale+(scale/2)))
+
+            clock.tick(30)
+            pygame.display.flip()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+
+    time.sleep(0.01)
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+    #for name in search_results.paths.keys():
+    #    for cell in search_results.paths[name]:
+    #        if cell != maze.start:
+    #            pygame.draw.line(screen, search_results.colours[name], (cell.x*scale+(scale/2), cell.y*scale+(scale/2)),(cell.previous.x*scale+(scale/2), cell.previous.y*scale+#(scale/2)))
+    #            time.sleep(0.01)
+    #            pygame.display.flip()
+
+    # Flip the display
+    #pygame.display.flip()
+
+    # Done! Time to quit.
+    pygame.quit()
+
+def draw_grid(screen, scale, maze, window_size):
+    cells = maze.maze
     screen.fill((255, 255, 255))
 
     pygame.draw.rect(screen, (0,0,255), (maze.start.x*scale+(scale/4), maze.start.y*scale+(scale/4), scale/2, scale/2))
@@ -46,37 +87,11 @@ def main():
                 if not value and direction == "right":
                     pygame.draw.line(screen, (255,255,255), ((scale*i)+scale, (scale*j)+1), ((scale*i)+scale, (scale*j)+scale-1))
 
-    for cell in search_results.bfs_closed:
-        if cell != maze.start:
-            pygame.draw.line(screen, (51,255,51), (cell.x*scale+(scale/2), cell.y*scale+(scale/2)),(cell.previous.x*scale+(scale/2), cell.previous.y*scale+(scale/2)))
-
-    for cell in search_results.bfs_path:
-        if cell != maze.start:
-            pygame.draw.line(screen, (255,0,255), (cell.x*scale+(scale/2), cell.y*scale+(scale/2)),(cell.previous.x*scale+(scale/2), cell.previous.y*scale+(scale/2)))
-
-
-    #for cell in search_results.closed:
-    #    if cell != maze.start:
-    #        pygame.draw.line(screen, (51,255,51), (cell.x*scale+(scale/2), cell.y*scale+(scale/2)),(cell.previous.x*scale+(scale/2), cell.previous.y*scale+(scale/2)))
-
-    for cell in search_results.path:
-        if cell != maze.start:
-            pygame.draw.line(screen, (0,0,204), (cell.x*scale+(scale/2), cell.y*scale+(scale/2)),(cell.previous.x*scale+(scale/2), cell.previous.y*scale+(scale/2)))
-
-
-    # Flip the display
     pygame.display.flip()
 
-    # Run until the user asks to quit
-    running = True
-    while running:
 
-        # Did the user click the window close button
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
 
-    # Done! Time to quit.
-    pygame.quit()
+def draw(screen, search_results):
+    pass
 
 main()

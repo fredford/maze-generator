@@ -5,97 +5,79 @@ class Searches:
         self.maze = maze
         self.start = self.maze.start
         self.end = self.maze.end
-        self.path = []
-        self.final_path = ""
-        self.bfs_path = []
 
-        self.a_star_algorithm()
+        self.paths = {}
+        self.colours = {
+                        "bfs closed": (25,200,25),
+                        "bfs path": (255,0,255),
+                        "astar closed": (255,0,0),
+                        "astar path": (0,0,204)
+        }
         self.bfs_algorithm()
+        self.a_star_algorithm()
 
     def bfs_algorithm(self):
-        for row in self.maze.maze:
-            for cell in row:
-                cell.previous = None
+        self.clear_history()
 
-        self.bfs_closed = []
+        bfs_closed = []
+        bfs_path = []
+
         frontier = [self.start]
+
         while len(frontier) > 0:
-            print(frontier)
             current = frontier[0]
-            self.bfs_closed.append(frontier.pop(0))
+            bfs_closed.append(frontier.pop(0))
 
             if current == self.end:
                 while current != self.start:
-                    self.bfs_path.append(current)
+                    bfs_path.append(current)
                     current = current.previous
+                continue
 
             for direction, wall in current.walls.items():
                 if not wall:
                     cell = current.neighbors[direction]
-                    if cell in self.bfs_closed or cell in frontier:
+                    if cell in bfs_closed or cell in frontier:
                         continue
                     cell.set_previous(current)
                     frontier.append(cell)
 
+        self.paths["bfs closed"] = bfs_closed
+        self.paths["bfs path"] = bfs_path
 
     def a_star_algorithm(self):
+        self.clear_history()
+
+        astar_closed = []
+        astar_path = []
+
         frontier = [self.start]
-        self.closed = []
-        count = 0
 
-        while len(frontier) > 0 and count < 10000:
-
+        while len(frontier) > 0:
             frontier.sort(key=lambda x: x.distance)
             current = frontier[0]
-            #print("Current")
-            #print(current)
 
             if current == self.end:
                 while current != self.start:
-                    self.path.append(current)
+                    astar_path.append(current)
                     current = current.previous
 
-            self.closed.append(frontier.pop(0))
+                self.paths["astar closed"] = astar_closed
+                self.paths["astar path"] = astar_path
+                return
+
+            astar_closed.append(frontier.pop(0))
 
             for direction, wall in current.walls.items():
                 if not wall:
                     cell = current.neighbors[direction]
-                    if cell in self.closed or cell in frontier:
+                    if cell in astar_closed or cell in frontier:
                         continue
                     cell.set_previous(current)
                     cell.update_distance()
                     frontier.append(cell)
 
-
-            count += 1
-
-
-class Node:
-
-    def __init__(self, current_cell, last_cell=None, previous_node=None):
-        self.cell = current_cell
-        self.previous_cell = last_cell
-        self.previous_node = previous_node
-        self.distance = 0
-        self.path_to_start = ""
-        self.update_distance()
-        self.update_path()
-
-    def update_distance(self):
-        if self.previous_cell == None:
-            self.distance = 0
-        else:
-            self.distance = self.previous_node.distance + 1
-
-    def update_path(self):
-        if self.previous_cell == None:
-            self.path_to_start = str(self.cell)
-        else:
-            self.path_to_start = self.previous_node.path_to_start + str(self.cell)
-
-    def __repr__(self):
-        return str(self)
-
-    def __str__(self):
-        #return self.path_to_start+","+str(self.distance)
-        return str(self.cell)
+    def clear_history(self):
+        for row in self.maze.maze:
+            for cell in row:
+                cell.previous = None
