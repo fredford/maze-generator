@@ -7,7 +7,7 @@ import a_star as astar
 
 def main():
     pygame.init()
-    board_size = 20
+    board_size = 30
     window_size = 600
     scale = window_size/board_size
     screen = pygame.display.set_mode((window_size, window_size))
@@ -17,13 +17,12 @@ def main():
 
     a_star = astar.A_star(maze)
 
-
     pygame.display.set_caption("Maze")
 
     screen.fill((255, 255, 255))
 
-    pygame.draw.rect(screen, (0,0,255), (maze.start.x*scale, maze.start.y*scale, scale, scale))
-    pygame.draw.rect(screen, (255,0,0), (maze.end.x*scale, maze.end.y*scale, scale, scale))
+    pygame.draw.rect(screen, (0,0,255), (maze.start.x*scale+(scale/4), maze.start.y*scale+(scale/4), scale/2, scale/2))
+    pygame.draw.rect(screen, (255,0,0), (maze.end.x*scale+(scale/4), maze.end.y*scale+(scale/4), scale/2, scale/2))
 
     for i in range(len(cells)+1):
         pygame.draw.line(screen, (0,0,0), (0,i*scale), (window_size,i*scale))
@@ -47,14 +46,16 @@ def main():
                 if not value and direction == "right":
                     pygame.draw.line(screen, (255,255,255), ((scale*i)+scale, (scale*j)+1), ((scale*i)+scale, (scale*j)+scale-1))
 
-    for node in a_star.path:
-        print("hello")
-        print(str(node.cell) + "cell")
+
+
+    for cell in a_star.closed:
+        #print("hello")
+        print(str(cell) + "cell")
         print(str(maze.start) + "start")
 
-        if node.cell != maze.start:
-            print(node.cell.x, node.cell.y, node.previous_cell.x, node.previous_cell.y)
-            pygame.draw.line(screen, (0,255,255), (node.cell.x, node.cell.y),(node.previous_cell.x, node.previous_cell.y))
+        if cell != maze.start:
+            print(cell.x, cell.y, cell.previous.x, cell.previous.y)
+            pygame.draw.line(screen, (255,0,255), (cell.x*scale+(scale/2), cell.y*scale+(scale/2)),(cell.previous.x*scale+(scale/2), cell.previous.y*scale+(scale/2)))
 
 
     # Flip the display

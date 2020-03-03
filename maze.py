@@ -66,6 +66,9 @@ class Maze:
         while start == end:
             end = (random.randint(0, self.width), random.randint(0, self.height))
         print(start)
+        print(end)
+        print(len(self.maze))
+        print(len(self.maze[0]))
 
         self.start = self.maze[start[0]][start[1]]
         self.end = self.maze[end[0]][end[1]]

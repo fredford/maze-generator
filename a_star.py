@@ -12,35 +12,41 @@ class A_star:
         self.a_star_algorithm()
 
     def a_star_algorithm(self):
-        node = self.add_node(self.start, None, None)
-        frontier = [node]
+        frontier = [self.start]
+        self.closed = []
         count = 0
 
-        while len(frontier) > 0 and count < 20:
-            node = self.minimal_path(frontier)
+        while len(frontier) > 0 and count < 10000:
 
-            frontier.remove(node)
-            self.path.append(node)
-            if node.cell == self.end:
-                return node.path_to_start
+            print("Frontier")
+            print(frontier)
 
-            print(node.cell.neighbors)
-            for neighbor in node.cell.neighbors.values():
-                frontier.append(self.add_node(neighbor, node.cell, node))
+            frontier.sort(key=lambda x: x.distance)
+            current = frontier[0]
+            print("Current")
+            print(current)
+
+            if current == self.end:
+                while current != self.start:
+                    self.path.append(current)
+                    current = current.previous
+
+            self.closed.append(frontier.pop(0))
+
+            print("Frontier pop")
+            print(frontier)
+
+            for direction, wall in current.walls.items():
+                if not wall:
+                    cell = current.neighbors[direction]
+                    if cell in self.closed or cell in frontier:
+                        continue
+                    cell.set_previous(current)
+                    cell.update_distance()
+                    frontier.append(cell)
+
 
             count += 1
-
-
-    def add_node(self, current_cell, last_cell, last_node):
-        node = Node(current_cell, last_cell, last_node)
-        self.nodes.append(node)
-        return node
-
-
-    def minimal_path(self, frontier):
-        min_path = min(frontier, key=lambda x: x.distance)
-        #print(min_path)
-        return min_path
 
 
 class Node:
@@ -70,4 +76,5 @@ class Node:
         return str(self)
 
     def __str__(self):
-        return self.path_to_start+","+str(self.distance)
+        #return self.path_to_start+","+str(self.distance)
+        return str(self.cell)

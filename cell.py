@@ -10,6 +10,17 @@ class Cell:
         self.walls = {"above": True, "below": True, "left": True, "right": True}
         self.neighbors = {}
         self.test = False
+        self.distance = 0
+        self.previous = None
+
+    def set_previous(self, previous):
+        self.previous = previous
+
+    def update_distance(self):
+        if self.previous == None:
+            self.distance = 0
+        else:
+            self.distance = self.previous.distance + 1
 
     def all_walls(self):
         return all(self.walls.values())
@@ -26,8 +37,8 @@ class Cell:
     def __str__(self):
 
         if all(self.walls.values()):
-            return "("+str(self.x)+","+str(self.y)+")"
+            return "("+str(self.x)+","+str(self.y)+","+str(self.distance)+")"
             #return " 1"
         else:
-            return "("+str(self.x)+","+str(self.y)+")"
+            return "("+str(self.x)+","+str(self.y)+","+str(self.distance)+")"
             #return " 0"
