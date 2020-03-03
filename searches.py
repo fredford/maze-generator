@@ -3,11 +3,9 @@ import math
 class Searches:
 
     def __init__(self, maze):
-
         self.maze = maze
         self.start = self.maze.start
         self.end = self.maze.end
-
         self.paths = {}
         self.colours = {
                         "bfs closed": (25,200,25),

@@ -1,13 +1,11 @@
 import maze_generator
 import pygame, time
 import maze as mg
-#from window import Window
 import searches
-
 
 def main():
     pygame.init()
-    board_size = 80
+    board_size = 10
     window_size = 600
     scale = window_size/board_size
     clock = pygame.time.Clock()
@@ -18,9 +16,19 @@ def main():
     maze = mg.Maze(board_size, board_size)
     search_results = searches.Searches(maze)
 
-    running = True
 
     draw_grid(screen, scale, maze, window_size)
+    draw_graphs(screen, search_results, maze, scale, clock)
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+    pygame.quit()
+
+def draw_graphs(screen, search_results, maze, scale, clock):
 
     for name in search_results.paths.keys():
         for cell in search_results.paths[name]:
@@ -36,16 +44,6 @@ def main():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-
-    time.sleep(0.01)
-
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-    pygame.quit()
 
 def draw_grid(screen, scale, maze, window_size):
     cells = maze.maze
@@ -66,7 +64,6 @@ def draw_grid(screen, scale, maze, window_size):
             cell = cells[i][j]
 
             for direction, value in cell.walls.items():
-
                 if not value and direction == "above":
                     pygame.draw.line(screen, (255,255,255), ((scale*i)+1, (scale*j)) , ((scale*i)+scale-1, (scale*j)))
                 if not value and direction == "below":
@@ -77,10 +74,5 @@ def draw_grid(screen, scale, maze, window_size):
                     pygame.draw.line(screen, (255,255,255), ((scale*i)+scale, (scale*j)+1), ((scale*i)+scale, (scale*j)+scale-1))
 
     pygame.display.flip()
-
-
-
-def draw(screen, search_results):
-    pass
 
 main()
