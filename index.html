@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Maze Solver</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./styles.css">
+
+  <!-- Scripts -->
+  <script>
+    delete module.exports
+  </script>
+  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+  <script src="./window.js" charset="utf-8"></script>
+
+</head>
+
+<body>
+  <h4 style="text-align:center"></h4>
+  <div id="container" class="container-fluid">
+
+    <!-- Input row -->
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+        <h3 class="hash-heading">Board Size</h3>
+        <textarea rows="2" id="text-input" class="form-control text-input" placeholder="Enter board size between 2 and 100"></textarea>
+      </div>
+    </div>
+
+    <!-- MD5 row -->
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h3 class="hash-heading">Solver:</h3>
+      </div>
+    </div>
+
+    <!-- SHA-1 row -->
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h4 class="solver-heading">Breadth First Search</h4>
+        </p>
+      </div>
+    </div>
+    <!-- Rounded switch -->
+    <label class="switch">
+      <input type="checkbox">
+      <span class="slider round"></span>
+    </label>
+
+    <!-- SHA-256 row -->
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h4 class="solver-heading">A* Search</h4>
+      </div>
+    </div>
+    <!-- Rounded switch -->
+    <label class="switch">
+      <input type="checkbox">
+      <span class="slider round"></span>
+    </label>
+  </div>
+</body>
+
+<div class="row">
+
+    <button class="button1">Generate</button>
+</div>
+
+
+</html>
