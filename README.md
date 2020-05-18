@@ -55,7 +55,7 @@ The following packages are used in the project
 
 ## Layout
 
-```shell
+```
 |-- src
 |   |-- utils.py                 # Input Output event handling file
 |   |-- maze.py                  # Data object for the overall maze settings
