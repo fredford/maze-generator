@@ -8,7 +8,7 @@ from src.button import Button
 from src.maze import Maze
 from src.generator import Generator
 from src.searcher import Searcher
-from src.agent_env_interactor import Interactor
+from src.interactor import Interactor
 from src.q_learning_agent import QLearningAgent
 from src.e_sarsa_agent import ExpectedSarsaAgent
 
@@ -69,9 +69,9 @@ class Utils:
         # Reinforcement Learning parameters
         self.num_actions = 4
         self.num_states = self.maze.size * self.maze.size
-        self.step_size = 0.1
+        self.step_size = 0.5
         self.epsilon = 0.1
-        self.discount = 0.1
+        self.discount = 0.9
         self.num_episodes = 50
         self.num_runs = 5
         self.all_states_visited = {}
@@ -486,19 +486,20 @@ class Utils:
                 runs = self.all_states_visited["Expected SARSA"]
 
             # Set the mid point of the runs performed by the agent
-            if len(runs) > 2:
-                mid = len(runs)//2
-            else:
-                mid = -1
+            #if len(runs) > 2:
+            #    mid = len(runs)//2
+            #else:
+            #    mid = -1
 
             count = 0
             # Go through each run and display the first set of episodes, the middle set of episodes and the final set of episodes.
-            for run in runs:
-                for episode in run:
-                    if count == 0 or count == len(runs)-1 or count == mid:
-                        for self.state in episode:
-                            self.draw_window()
-                count += 1
+            run = runs[-1]
+            #for run in runs:
+            for episode in run:
+                #if count == 0 or count == len(runs)-1 or count == mid:
+                for self.state in episode:
+                    self.draw_window()
+            count += 1
             self.buttons["Show Run"].pressed = 2
         # Reset the Show Run button
         elif self.buttons["Show Run"].pressed == 3:
@@ -583,6 +584,7 @@ class Utils:
                     self.lengths[event_key] = "-"
             # When the user clicks on a reinforcement learning button
             if event_key == "Q-Learning" or event_key == "Expected SARSA" and self.buttons[event_key].pressed == 1:
+                self.buttons[event_key].color = LIGHT_BLUE
                 if event_key == "Q-Learning" and self.buttons["Expected SARSA"].pressed == 2:
                     self.buttons["Expected SARSA"].color = GREY
                     self.buttons["Expected SARSA"].pressed = 0
